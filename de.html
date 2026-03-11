@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Gebäude-Erstellungsleitfaden - Deutsch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Zurück zur Sprachauswahl</a>
+        
+        <div class="guide-container">
+            <header class="guide-header">
+                <h1>🏗️ Workshop Gebäude-Erstellungsleitfaden</h1>
+                <p class="version">Version: 1.0 | Letzte Aktualisierung: 2026 | Für: Unity 2022.3 LTS</p>
+            </header>
+
+            <div class="guide-content">
+                <p>Willkommen, Creator! Vielen Dank für Ihr Interesse an der Erstellung von benutzerdefinierten Inhalten! Ihr Beitrag wird der Community zum Gedeihen verhelfen! Dieser Leitfaden hilft Ihnen, Inhalte zu erstellen, die den Spezifikationen entsprechen, und sie in die Steam Workshop hochzuladen.</p>
+
+                <h2>Technische Anforderungen</h2>
+                <p>Das Hochladen von Inhalten erfordert zwei Skripte: <strong>BuildingData</strong> und <strong>WorkshopUploadTool</strong>. BuildingData wird zum Ausfüllen der Gebäudedaten verwendet, und WorkshopUploadTool wird zum Hochladen verwendet. Sie benötigen auch <strong>Steamworks.NET</strong>. Wenn Sie Steamworks.NET aktualisieren müssen, können Sie es von der GitHub-Seite herunterladen:</p>
+                <p><a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank">https://github.com/rlabrecque/Steamworks.NET/releases</a></p>
+                <p>Importieren Sie es in Unity, und hängen Sie das Steam Manager-Skript an ein leeres GameObject an.</p>
+
+                <div class="tip-box">
+                    <strong>💡 Tipp:</strong> Ich habe die erforderlichen Skripte und Steamworks.NET in eine Unity-Paketdatei gepackt. Sie können diese Paketdatei verwenden oder sie separat herunterladen.
+                </div>
+
+                <h3>Gebäudemodell-Spezifikationen</h3>
+                <div class="warning-box">
+                    <strong>⚠️ Erforderliche Komponenten Erinnerung:</strong> Gebäude-Prefabs müssen die folgenden drei Kernkomponenten enthalten. Das Fehlen einer davon führt zu Funktionsstörungen:
+                    <ul>
+                        <li><strong>Mesh Filter</strong>: Zeigt das Modell-Mesh an</li>
+                        <li><strong>Mesh Renderer</strong>: Rendert das Modell (erfordert Materialzuweisung)</li>
+                        <li><strong>Collider</strong> (Box Collider): Wird für Maus-Hover-Hervorhebung, Klick-Erkennung und Platzierungs-Kollisionserkennung verwendet</li>
+                    </ul>
+                </div>
+
+                <h3>Unterstützte Ressourcenformate</h3>
+                <ul>
+                    <li><strong>Modelle</strong>: FBX</li>
+                    <li><strong>Texturen</strong>: PNG</li>
+                    <li><strong>Materialien</strong>: Unity URP Lit Shader</li>
+                </ul>
+
+                <h3>Dateigrößenbeschränkungen</h3>
+                <ul>
+                    <li>Einzelnes Gebäude-AssetBundle: ≤ 50 MB</li>
+                    <li>Vorschaubild: ≤ 1 MB</li>
+                    <li>Gesamte Download-Größe: ≤ 100 MB</li>
+                </ul>
+
+                <h2>Gebäude-Design-Richtlinien</h2>
+
+                <h3>1. Größenspezifikationen</h3>
+                <p>Entwerfen Sie basierend auf der vom Gebäude belegten Gittergröße. Die Gebäudebasis (Fundament) sollte mindestens 1 Meter Länge und Breite haben:</p>
+                <p>Damit die Gitterbelegung des Gebäudes korrekt berechnet wird, wird empfohlen, <strong>ungerade Quadrate</strong> für die Gebäudebasisgröße zu verwenden, wie: 1×1, 3×3, 5×5. <strong>Gerade Quadrate und nicht-quadratische Formen werden nicht empfohlen</strong>, wie: 1×2, 2×2, 2×3, 4×4.</p>
+                <p><strong>Höhe</strong>: Keine strikte Begrenzung, aber es wird empfohlen, nicht unter 0,1 Meter zu gehen</p>
+
+                <h3>2. Visueller Stil</h3>
+                <p>Um die Konsistenz des Spiels zu wahren, wird empfohlen:</p>
+                <ul>
+                    <li>LowPoly-Stil verwenden</li>
+                    <li>Die Gesamtproportionen und Skalierungsverhältnisse des Gebäudes sicherstellen (Spiel-Standardskalierungsreferenz: Charakterhöhe 0,1 Meter)</li>
+                    <li>Isometriefreundliche Designs verwenden</li>
+                    <li>Übermäßig kleine Details vermeiden (aus der Ferne schwer zu sehen)</li>
+                    <li>Klare Umrisse und Farbkontraste verwenden</li>
+                    <li>Details aus verschiedenen Winkeln berücksichtigen</li>
+                </ul>
+
+                <h3>3. Leistungsoptimierungsempfehlungen</h3>
+                <ul>
+                    <li>Polygonanzahl angemessen kontrollieren</li>
+                    <li>Transparente Materialien (Alpha Test statt Alpha Blend verwenden)</li>
+                </ul>
+
+                <h2>Erstellungsprozess</h2>
+
+                <div class="step-card">
+                    <h4>Schritt 1: Modellierung in 3D-Software</h4>
+                    <ol>
+                        <li>Modelle mit Blender, Maya, 3ds Max usw. erstellen</li>
+                        <li>Sicherstellen, dass der Modell-Ursprung in der Mitte unten ist
+                            <ul>
+                                <li>✅ Richtig: Gebäudemittelpunkt am Weltursprung</li>
+                                <li>❌ Falsch: Gebäude versetzt oder Rotation nicht ausgerichtet</li>
+                            </ul>
+                        </li>
+                        <li>Alle Transformationen anwenden (Scale, Rotation)</li>
+                        <li>Als FBX-Format exportieren</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 2: Import in Unity</h4>
+                    <ol>
+                        <li>Die FBX in das Unity-Projekt ziehen</li>
+                        <li>Die Transform-Position des Gebäude-Prefabs auf (0, 0, 0) setzen</li>
+                        <li>Sicherstellen, dass die Gebäudebasis auf der Y=0-Ebene ist</li>
+                        <li>Das Gebäude sollte in die positive Z-Achse zeigen</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 3: Materialien und Texturen festlegen</h4>
+                    <ol>
+                        <li>Materialien erstellen (mit URP Lit Shader)</li>
+                        <li>Materialparameter anpassen</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 4: Erforderliche Komponenten hinzufügen</h4>
+                    <p>Sicherstellen, dass das Gebäude-Prefab die folgenden drei <strong>erforderlichen Komponenten</strong> enthält:</p>
+                    
+                    <h4>1. Mesh Filter und Mesh Renderer</h4>
+                    <ol>
+                        <li>Das Gebäude-Root-Objekt auswählen</li>
+                        <li>Bestätigen, dass die <strong>Mesh Filter</strong>-Komponente hinzugefügt wurde (falls nicht, auf Add Component → Mesh Filter klicken)</li>
+                        <li>Bestätigen, dass die <strong>Mesh Renderer</strong>-Komponente hinzugefügt wurde</li>
+                        <li>Materialien im Mesh Renderer zuweisen (Standard oder URP Lit Shader verwenden)</li>
+                    </ol>
+                    <div class="warning-box">
+                        <strong>⚠️ Wichtig:</strong> Gebäude ohne Mesh Renderer werden nicht angezeigt und lösen keine Maus-Hover-Hervorhebung aus!
+                    </div>
+
+                    <h4>2. Collider</h4>
+                    <ol>
+                        <li>Das Gebäude-Root-Objekt auswählen</li>
+                        <li>Eine <strong>Box Collider</strong>-Komponente hinzufügen (empfohlen) oder <strong>Mesh Collider</strong></li>
+                        <li>Die Collider-Größe anpassen, um das gesamte Gebäude abzudecken</li>
+                        <li>Sicherstellen, dass der Collider nicht über den Gebäudebereich hinausragt, da dies zu Kollisionen mit anderen Gebäuden führt</li>
+                    </ol>
+                    <div class="warning-box">
+                        <strong>⚠️ Wichtig:</strong> Collider ist eine notwendige Bedingung für Maus-Hover-Hervorhebung und Klick-Erkennung! Gebäude ohne Collider können nicht von Spielern ausgewählt oder interagiert werden.
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 5: Prefab erstellen</h4>
+                    <ol>
+                        <li>Das Gebäude in das Project-Fenster ziehen, um ein Prefab zu erstellen</li>
+                        <li>Benennungskonvention: <code>{BuildingName}_Prefab</code></li>
+                        <li>Testen, ob das Prefab normal instanziiert werden kann</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 6: BuildingData erstellen</h4>
+                    <ol>
+                        <li>Rechtsklick → <strong>Create → City Builder → Building Data</strong></li>
+                        <li>Folgende Felder ausfüllen:</li>
+                    </ol>
+                    
+                    <table>
+                        <tr>
+                            <th>Feld</th>
+                            <th>Beschreibung</th>
+                            <th>Beispiel</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Building Name</strong></td>
+                            <td>Anzeigename des Gebäudes, kann Name oder Nummer verwenden</td>
+                            <td>Ferriswheel, SSmbl2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Building ID</strong></td>
+                            <td>Eindeutiger Identifikator, empfohlen: Stilname + Nummer, oder reine Nummer</td>
+                            <td>SunsetCity_01, SSmbl2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Style</strong> ⭐</td>
+                            <td><strong>Bestimmt, unter welchem Stil-Tab das Gebäude im Spielbau-Menü erscheint</strong>, empfohlen: Entwicklername, Paketname oder Themenname. Gebäude derselben Serie sollten denselben Wert haben</td>
+                            <td>Lyon'sPack, SunsetCity</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Category</strong> ⭐</td>
+                            <td><strong>Bestimmt, unter welcher Kategoriespalte es unter diesem Stil erscheint</strong>, kann bestehende Spielkategorien für Kompatibilität verwenden, oder nach Gebäudeklassifizierung ausfüllen</td>
+                            <td>Large, Residential</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Grid Size</strong></td>
+                            <td>Gitterbelegungsgröße des Gebäudes</td>
+                            <td>3x3</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Building Prefab</strong></td>
+                            <td>Ihr Gebäude-Prefab hineinziehen</td>
+                            <td>—</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>Integrierte Spielkategorie-Referenz</strong>:</p>
+                    <table>
+                        <tr>
+                            <th>Kategorie-Wert</th>
+                            <th>Beschreibung</th>
+                        </tr>
+                        <tr><td><code>Large</code></td><td>Groß</td></tr>
+                        <tr><td><code>Medium</code></td><td>Mittel</td></tr>
+                        <tr><td><code>Small</code></td><td>Klein</td></tr>
+                    </table>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Style- und Category-Felder sind sehr wichtig:</strong> Sie werden in <code>metadata.json</code> verpackt (automatisch vom Upload-Tool geschrieben). Wenn das Spiel Ihren Mod lädt, bestimmt es die Position des Gebäudes im Menü basierend auf diesen beiden Feldern. Bitte stellen Sie sicher, dass Sie sie ausfüllen, sonst wird das Gebäude möglicherweise nicht in der richtigen Kategorie angezeigt.
+                    </div>
+
+                    <ol start="3">
+                        <li>Gebäude-Symbol erstellen (empfohlen 128×128 PNG) und in das <strong>Icon</strong>-Feld ziehen</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 7: Gebäude testen</h4>
+                    <ol>
+                        <li>Das Gebäude im Spiel testen:
+                            <ul>
+                                <li>Kann es korrekt platziert werden</li>
+                                <li>Ist die Rotation normal</li>
+                                <li>Ist die Kollisionserkennung korrekt</li>
+                                <li>Sind die visuellen Effekte zufriedenstellend</li>
+                            </ul>
+                        </li>
+                        <li>Bis zur Zufriedenheit anpassen</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 8: Vorbereitung zum Hochladen</h4>
+                    <ul>
+                        <li>Vorschaubild erstellen (empfohlen 600x600)</li>
+                        <li>Bestätigen, dass <strong>Style</strong> und <strong>Category</strong> in BuildingData korrekt ausgefüllt sind (das Upload-Tool liest sie automatisch)</li>
+                    </ul>
+                    
+                    <p><strong>Checkliste vor dem Hochladen</strong>:</p>
+                    <ul class="checklist">
+                        <li>Modell-Dreieckszahl innerhalb der Grenzen</li>
+                        <li>Texturauflösung angemessen</li>
+                        <li>Enthält <strong>Mesh Filter</strong>-Komponente</li>
+                        <li>Enthält <strong>Mesh Renderer</strong>-Komponente (Material zugewiesen)</li>
+                        <li>Enthält <strong>Collider</strong>-Komponente</li>
+                        <li>Prefab kann normal instanziiert werden</li>
+                        <li>Gebäude ist am Gitter ausgerichtet</li>
+                        <li>Keine fehlenden Materialien oder Texturen</li>
+                        <li>Alle BuildingData-Felder ausgefüllt</li>
+                        <li>Vorschaubild ist klar</li>
+                        <li>Spielinterner Test bestanden</li>
+                    </ul>
+                </div>
+
+                <h2>Schritt 9: In den Workshop hochladen</h2>
+                <div class="warning-box">
+                    <strong>⚠️ Das Hochladen erfolgt in zwei Schritten</strong>, da AssetBundle-Packung und Steam-Upload unterschiedliche Anforderungen an den Editor-Status haben und separat bedient werden müssen.
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 1: Ressourcen packen (Nicht-Play-Modus)</h4>
+                    <ol>
+                        <li>Sicherstellen, dass Sie sich im <strong>Nicht-Play-Modus</strong> befinden (Editor läuft nicht)</li>
+                        <li><strong>City Builder → Workshop Upload Tool</strong> öffnen</li>
+                        <li>Mod-Typ auswählen: <strong>Building</strong></li>
+                        <li><strong>BuildingData</strong> hineinziehen (das Tool liest Style und Category automatisch, kann manuell geändert werden)</li>
+                        <li>Das <strong>Gebäude-Prefab</strong> hineinziehen</li>
+                        <li>Workshop-Informationen ausfüllen (hauptsächlich Titel, Beschreibung kann im Workshop bearbeitet werden)</li>
+                        <li>Auf <strong>"Schritt 1: Ressourcen als AssetBundle packen"</strong> klicken</li>
+                        <li>Wenn die Meldung <strong>"Packung abgeschlossen! Bitte Play-Modus betreten und Schritt 2 zum Hochladen klicken"</strong> erscheint, ist es erfolgreich</li>
+                    </ol>
+                    <div class="tip-box">
+                        <strong>💡 Tipp:</strong> Der Packungspfad wird automatisch gespeichert und geht nach dem Betreten des Play-Modus nicht verloren, keine erneute Eingabe der Informationen nötig.
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 2: In Steam hochladen (Play-Modus)</h4>
+                    <ol>
+                        <li>Den <strong>Play</strong>-Button des Unity-Editors klicken und warten, bis SteamManager initialisiert ist</li>
+                        <li>Im Tool-Fenster bestätigen, dass Steam initialisiert wurde (keine Warnmeldungen)</li>
+                        <li>Auf <strong>"Schritt 2: In Steam Workshop hochladen"</strong> klicken</li>
+                        <li>Warten, bis der Upload abgeschlossen ist, und die angezeigte <strong>Workshop-Item-ID</strong> notieren (für spätere Updates)</li>
+                    </ol>
+                    <div class="tip-box">
+                        <strong>💡 Tipp:</strong> Das Upload-Tool generiert automatisch <code>metadata.json</code> und packt es in das AssetBundle-Inhaltsverzeichnis, das Style- und Category-Informationen enthält. Nachdem Spieler abonniert haben, zeigt das Spiel es automatisch in der richtigen Kategorie an.
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>Schritt 10: Veröffentlichen und Warten</h4>
+                    <ol>
+                        <li>Informationen auf der Steam Workshop-Seite vervollständigen</li>
+                        <li>Weitere Screenshots hinzufügen</li>
+                    </ol>
+                </div>
+
+                <h2>Hinweise zu Himmel- und Bodenmaterialien</h2>
+                <ul>
+                    <li>Himmel- und Boden-Shader müssen die URP-Pipeline verwenden</li>
+                    <li>Boden-Shader sollten prozedurale Normalen verwenden, um dynamische Gitterbereichsgrößenanpassungen zu bewältigen</li>
+                </ul>
+
+                <h2>Häufige Fehler und Lösungen</h2>
+
+                <h3>Fehler 0: "Building AssetBundles while in play mode is not allowed" beim Packen</h3>
+                <p><strong>Ursache</strong>: Der Packen-Button wurde im Play-Modus geklickt, aber AssetBundle-Packung kann nur im Nicht-Play-Modus ausgeführt werden</p>
+                <p><strong>Lösung</strong>:</p>
+                <ol>
+                    <li>Play-Modus beenden (Stopp-Button klicken)</li>
+                    <li>"Schritt 1: Ressourcen als AssetBundle packen" im Tool erneut klicken</li>
+                    <li>Nach Abschluss der Packung in den Play-Modus wechseln zum Hochladen</li>
+                </ol>
+
+                <h3>Fehler 1: Gebäude erscheint rosa</h3>
+                <p><strong>Ursache</strong>: Fehlendes Material oder Shader</p>
+                <p><strong>Lösung</strong>:</p>
+                <ol>
+                    <li>Sicherstellen, dass alle Texturen korrekt zugewiesen sind</li>
+                    <li>Prüfen, ob Materialien im AssetBundle enthalten sind</li>
+                </ol>
+
+                <h3>Fehler 2: Gebäude kann nicht platziert werden</h3>
+                <p><strong>Ursache</strong>: Fehlende erforderliche Komponenten (Mesh Filter/Mesh Renderer/Collider) oder falsche Gittergrößeneinstellung</p>
+                <p><strong>Lösung</strong>:</p>
+                <ol>
+                    <li>Bestätigen, dass das Gebäude-Prefab <strong>Mesh Filter</strong>, <strong>Mesh Renderer</strong> und <strong>Collider</strong>-Komponenten enthält</li>
+                    <li>Prüfen, ob dem Mesh Renderer Materialien zugewiesen sind</li>
+                    <li>Box Collider zum Gebäude-Root-Objekt hinzufügen</li>
+                    <li>BuildingData's Grid Size-Einstellung prüfen</li>
+                    <li>Gebäudeabmessungen bestätigen</li>
+                </ol>
+
+                <h3>Fehler 3: Gebäudeposition versetzt</h3>
+                <p><strong>Ursache</strong>: Falsche Prefab-Transform-Einstellungen</p>
+                <p><strong>Lösung</strong>:</p>
+                <ol>
+                    <li>Prefab-Position auf (0, 0, 0) setzen</li>
+                    <li>Sicherstellen, dass die Gebäudebasis auf der Y=0-Ebene ist</li>
+                    <li>Die Pivot Point-Position des Modells prüfen</li>
+                </ol>
+
+                <h3>Fehler 4: Gebäude nach Rotation falsch ausgerichtet</h3>
+                <p><strong>Ursache</strong>: Gebäudemittelpunkt nicht im Gitterzentrum</p>
+                <p><strong>Lösung</strong>:</p>
+                <ol>
+                    <li>Modell-Ursprung in 3D-Software anpassen</li>
+                    <li>Oder Position von Kind-Objekten in Unity anpassen</li>
+                    <li>Sicherstellen, dass das Gebäude um den Mittelpunkt rotiert</li>
+                </ol>
+
+                <h3>Fehler 5: Datei zu groß zum Hochladen</h3>
+                <p><strong>Ursache</strong>: Texturauflösung zu hoch oder Modell zu komplex</p>
+                <p><strong>Lösung</strong>:</p>
+                <ol>
+                    <li>Texturauflösung reduzieren (z.B. von 4K auf 2K)</li>
+                    <li>Modell optimieren, um Polygonanzahl zu reduzieren</li>
+                    <li>Texturen komprimieren (DXT5- oder BC7-Format verwenden)</li>
+                    <li>Unnötige Details entfernen</li>
+                </ol>
+
+                <h2>Erweiterte Techniken</h2>
+
+                <h3>Animation hinzufügen</h3>
+                <p>Wenn Ihr Gebäude Animation enthält (z.B. rotierende Windmühle):</p>
+                <ol>
+                    <li>Animation-Controller erstellen und Animation hineinziehen</li>
+                    <li>Animator-Komponente zum Prefab hinzufügen</li>
+                    <li>Animation-Controller in die Animator-Komponente ziehen</li>
+                </ol>
+
+                <h3>LOD-System verwenden</h3>
+                <p>Detail-Culling-Skript für große Gebäude hinzufügen:</p>
+                <ol>
+                    <li>BuildingDetailCulling-Skript hinzufügen</li>
+                    <li>Verschiedene LOD-Stufen dem Modell zuweisen</li>
+                    <li>Unterschiedliche Culling-Distanzen für jede Stufe festlegen</li>
+                </ol>
+
+                <h3>Benutzerdefinierte Materialeffekte</h3>
+                <p>Mit Shader Graph spezielle Effekte erstellen:</p>
+                <ol>
+                    <li>Shader Graph-Asset erstellen</li>
+                    <li>Benutzerdefinierte Effekte designen (z.B. leuchtende Fenster)</li>
+                    <li>Material mit diesem Shader erstellen</li>
+                    <li>Sicherstellen, dass der Shader mit der Zielplattform kompatibel ist</li>
+                </ol>
+
+                <h2>Schlussfolgerung</h2>
+                <p>Vielen Dank für Ihre Erstellung und Ihren Beitrag zur Community. Ich hoffe, das Spiel wird durch Ihre Inhalte langanhaltende Vitalität entfalten!</p>
+                <p>Ich freue mich darauf, dass Ihre Kreationen dem Spiel mehr farbenfrohe Möglichkeiten hinzufügen!</p>
+
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border-color);">
+                
+                <div class="downloads-section" style="margin-top: 40px;">
+                    <h2>📦 Entwicklungsressourcen herunterladen</h2>
+                    <div class="download-grid">
+                        <div class="download-card">
+                            <h3>Unity-Paket</h3>
+                            <p>Enthält BuildingData, WorkshopUploadTool-Skripte und Steamworks.NET</p>
+                            <a href="#" class="btn-download" onclick="alert('Bitte durch tatsächlichen Download-Link ersetzen')">.unitypackage herunterladen</a>
+                        </div>
+                        <div class="download-card">
+                            <h3>Standalone-Skripte</h3>
+                            <p>BuildingData.cs, WorkshopUploadTool.cs und BuildingDetailCulling.cs Skriptdateien (ohne Steamworks.NET)</p>
+                            <a href="#" class="btn-download" onclick="alert('Bitte durch tatsächlichen Download-Link ersetzen')">Scripts.zip herunterladen</a>
+                        </div>
+                        <div class="download-card">
+                            <h3>Steamworks.NET</h3>
+                            <p>Steam API-Integrationsbibliothek für Workshop-Upload-Funktionalität</p>
+                            <a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank" class="btn-download">GitHub Releases</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 3D City Builder Spiel | Version 1.0 | Für Unity 2022.3 LTS</p>
+        </footer>
+    </div>
+</body>
+</html>

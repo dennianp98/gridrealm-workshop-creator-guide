@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>워크숍 건축물 제작 가이드 - 한국어</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 언어 선택으로 돌아가기</a>
+        
+        <div class="guide-container">
+            <header class="guide-header">
+                <h1>🏗️ 워크숍 건축물 제작 가이드</h1>
+                <p class="version">버전: 1.0 | 최종 업데이트: 2026 | 지원: Unity 2022.3 LTS</p>
+            </header>
+
+            <div class="guide-content">
+                <p>창작자 여러분 환영합니다! 커스텀 콘텐츠 제작에 관심을 가져주셔서 감사합니다! 여러분의 기여가 커뮤니티의 번영에 도움이 될 것입니다! 이 가이드는 사양에 맞는 콘텐츠를 제작하고 Steam 창작마당에 업로드하는 방법을 안내합니다.</p>
+
+                <h2>기술 요구사항</h2>
+                <p>콘텐츠 업로드는 <strong>BuildingData</strong>와 <strong>WorkshopUploadTool</strong> 두 가지 스크립트에 의존합니다. BuildingData는 건축물 데이터를 입력하는 데 사용되며, WorkshopUploadTool은 업로드에 사용됩니다. 또한 <strong>Steamworks.NET</strong>이 필요합니다. Steamworks.NET을 업데이트해야 하는 경우 GitHub 페이지에서 다운로드할 수 있습니다:</p>
+                <p><a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank">https://github.com/rlabrecque/Steamworks.NET/releases</a></p>
+                <p>Unity에 가져온 후, 빈 게임오브젝트에 Steam Manager 스크립트를 연결하세요.</p>
+
+                <div class="tip-box">
+                    <strong>💡 팁:</strong> 업로드에 필요한 스크립트와 Steamworks.NET을 Unity 패키지 파일로 묶어 두었습니다. 이 패키지 파일을 사용하거나 별도로 다운로드할 수 있습니다.
+                </div>
+
+                <h3>건축물 모델 사양</h3>
+                <div class="warning-box">
+                    <strong>⚠️ 필수 컴포넌트 알림:</strong> 건축물 프리팹은 다음 세 가지 핵심 컴포넌트를 반드시 포함해야 합니다. 하나라도 누락되면 기능에 문제가 발생합니다:
+                    <ul>
+                        <li><strong>Mesh Filter</strong>: 모델 메시 표시</li>
+                        <li><strong>Mesh Renderer</strong>: 모델 렌더링 (머티리얼 할당 필요)</li>
+                        <li><strong>Collider</strong> (Box Collider): 마우스 호버 하이라이트, 클릭 감지 및 배치 충돌 감지에 사용</li>
+                    </ul>
+                </div>
+
+                <h3>지원 리소스 형식</h3>
+                <ul>
+                    <li><strong>모델</strong>: FBX</li>
+                    <li><strong>텍스처</strong>: PNG</li>
+                    <li><strong>머티리얼</strong>: Unity URP Lit Shader</li>
+                </ul>
+
+                <h3>파일 크기 제한</h3>
+                <ul>
+                    <li>단일 건축물 AssetBundle: ≤ 50MB</li>
+                    <li>미리보기 이미지: ≤ 1MB</li>
+                    <li>총 다운로드 크기: ≤ 100MB</li>
+                </ul>
+
+                <h2>건축물 디자인 가이드라인</h2>
+
+                <h3>1. 크기 사양</h3>
+                <p>건축물이 차지하는 그리드 크기에 따라 설계합니다. 건축물 바닥(기초) 크기는 최소 가로세로 1미터 이상이어야 합니다:</p>
+                <p>건축물의 그리드 점유가 올바르게 계산되도록 건축물 바닥 크기는 <strong>홀수 정사각형</strong>을 사용하는 것을 권장합니다. 예: 1×1, 3×3, 5×5. <strong>짝수 정사각형과 비정사각형은 권장하지 않습니다</strong>. 예: 1×2, 2×2, 2×3, 4×4.</p>
+                <p><strong>높이</strong>: 엄격한 제한은 없으나 최소 0.1미터 이상을 권장합니다</p>
+
+                <h3>2. 비주얼 스타일</h3>
+                <p>게임의 일관성을 유지하기 위해 다음을 권장합니다:</p>
+                <ul>
+                    <li>LowPoly 스타일 사용</li>
+                    <li>건축물의 전체적인 비율과 스케일 관계 확인 (게임 기본 스케일 참조: 캐릭터 높이 0.1미터)</li>
+                    <li>등축 투영에 친화적인 디자인 사용</li>
+                    <li>지나치게 작은 디테일 피하기 (멀리서 보이지 않음)</li>
+                    <li>명확한 윤곽선과 색상 대비 사용</li>
+                    <li>다양한 각도에서의 디테일 고려</li>
+                </ul>
+
+                <h3>3. 성능 최적화 권장사항</h3>
+                <ul>
+                    <li>폴리곤 수 합리적으로 조절</li>
+                    <li>투명 머티리얼 (Alpha Blend 대신 Alpha Test 사용)</li>
+                </ul>
+
+                <h2>제작 프로세스</h2>
+
+                <div class="step-card">
+                    <h4>1단계: 3D 소프트웨어에서 모델링</h4>
+                    <ol>
+                        <li>Blender, Maya, 3ds Max 등을 사용하여 모델 생성</li>
+                        <li>모델 원점이 바닥 중앙에 있는지 확인
+                            <ul>
+                                <li>✅ 올바름: 건축물 중심점이 월드 원점에 위치</li>
+                                <li>❌ 잘못됨: 건축물이 오프셋되거나 회전이 정렬되지 않음</li>
+                            </ul>
+                        </li>
+                        <li>모든 변환 적용 (Scale, Rotation)</li>
+                        <li>FBX 형식으로 낮내기</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>2단계: Unity로 가져오기</h4>
+                    <ol>
+                        <li>FBX를 Unity 프로젝트로 드래그</li>
+                        <li>건축물 프리팹의 Transform Position을 (0, 0, 0)으로 설정</li>
+                        <li>건축물 바닥이 Y=0 평면에 있는지 확인</li>
+                        <li>건축물이 Z축 양의 방향을 향하도록 설정</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>3단계: 머티리얼 및 텍스처 설정</h4>
+                    <ol>
+                        <li>머티리얼 생성 (URP Lit Shader 사용)</li>
+                        <li>머티리얼 파라미터 조정</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>4단계: 필수 컴포넌트 추가</h4>
+                    <p>건축물 프리팹이 다음 세 가지 <strong>필수 컴포넌트</strong>를 포함하는지 확인:</p>
+                    
+                    <h4>1. Mesh Filter와 Mesh Renderer</h4>
+                    <ol>
+                        <li>건축물 루트 오브젝트 선택</li>
+                        <li><strong>Mesh Filter</strong> 컴포넌트가 추가되었는지 확인 (없으면 Add Component → Mesh Filter 클릭)</li>
+                        <li><strong>Mesh Renderer</strong> 컴포넌트가 추가되었는지 확인</li>
+                        <li>Mesh Renderer에서 머티리얼 할당 (Standard 또는 URP Lit Shader 사용)</li>
+                    </ol>
+                    <div class="warning-box">
+                        <strong>⚠️ 중요:</strong> Mesh Renderer가 없는 건축물은 표시되지 않으며 마우스 호버 하이라이트 효과도 작동하지 않습니다!
+                    </div>
+
+                    <h4>2. Collider</h4>
+                    <ol>
+                        <li>건축물 루트 오브젝트 선택</li>
+                        <li><strong>Box Collider</strong> 컴포넌트 추가 (권장) 또는 <strong>Mesh Collider</strong></li>
+                        <li>Collider 크기를 건축물 전체를 덮도록 조정</li>
+                        <li>Collider가 건축물 범위를 벗어나지 않도록 주의. 벗어나면 다른 건축물과 충돌하여 배치할 수 없습니다</li>
+                    </ol>
+                    <div class="warning-box">
+                        <strong>⚠️ 중요:</strong> Collider는 마우스 호버 하이라이트와 클릭 감지의 필수 조건입니다! Collider가 없는 건축물은 플레이어가 선택하거나 상호작용할 수 없습니다.
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>5단계: 프리팹 생성</h4>
+                    <ol>
+                        <li>건축물을 Project 창으로 드래그하여 Prefab 생성</li>
+                        <li>명명 규칙: <code>{BuildingName}_Prefab</code></li>
+                        <li>프리팹이 정상적으로 인스턴스화되는지 테스트</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>6단계: BuildingData 생성</h4>
+                    <ol>
+                        <li>우클릭 → <strong>Create → City Builder → Building Data</strong></li>
+                        <li>다음 필드를 입력:</li>
+                    </ol>
+                    
+                    <table>
+                        <tr>
+                            <th>필드</th>
+                            <th>설명</th>
+                            <th>예시</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Building Name</strong></td>
+                            <td>건축물 표시 이름, 이름 또는 번호 사용 가능</td>
+                            <td>Ferriswheel, SSmbl2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Building ID</strong></td>
+                            <td>고유 식별자, 스타일 이름+번호 사용 권장, 또는 순수 번호</td>
+                            <td>SunsetCity_01, SSmbl2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Style</strong> ⭐</td>
+                            <td><strong>게임의 건축물 메뉴에서 어떤 스타일 탭에 표시될지 결정</strong>, 개발자 이름, 패키지 이름 또는 테마 이름 사용 권장. 같은 시리즈의 건축물은 같은 값을 설정</td>
+                            <td>Lyon'sPack, SunsetCity</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Category</strong> ⭐</td>
+                            <td><strong>해당 스타일 아래 어떤 카테고리 열에 표시될지 결정</strong>, 호환성을 위해 기존 게임 카테고리 사용 가능, 또는 건축물 분류에 따라 입력</td>
+                            <td>Large, Residential</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Grid Size</strong></td>
+                            <td>건축물 그리드 점유 크기</td>
+                            <td>3x3</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Building Prefab</strong></td>
+                            <td>건축물 프리팹을 드래그</td>
+                            <td>—</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>게임 내장 카테고리 참조</strong>:</p>
+                    <table>
+                        <tr>
+                            <th>카테고리 값</th>
+                            <th>설명</th>
+                        </tr>
+                        <tr><td><code>Large</code></td><td>대형</td></tr>
+                        <tr><td><code>Medium</code></td><td>중형</td></tr>
+                        <tr><td><code>Small</code></td><td>소형</td></tr>
+                    </table>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Style과 Category 필드는 매우 중요:</strong> 이들은 <code>metadata.json</code>에 패키지화됩니다 (업로드 도구가 자동으로 기록). 게임이 모드를 로드할 때, 이 두 필드를 기반으로 건축물의 메뉴 내 위치를 결정합니다. 반드시 입력하세요. 그렇지 않으면 건축물이 올바른 카테고리에 표시되지 않을 수 있습니다.
+                    </div>
+
+                    <ol start="3">
+                        <li>건축물 아이콘 생성 (권장 128×128 PNG) 후 <strong>Icon</strong> 필드에 드래그</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>7단계: 건축물 테스트</h4>
+                    <ol>
+                        <li>게임 내에서 건축물 테스트:
+                            <ul>
+                                <li>올바르게 배치할 수 있는지</li>
+                                <li>회전이 정상적인지</li>
+                                <li>충돌 감지가 정확한지</li>
+                                <li>시각 효과가 만족스러운지</li>
+                            </ul>
+                        </li>
+                        <li>만족할 때까지 조정</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>8단계: 업로드 준비</h4>
+                    <ul>
+                        <li>미리보기 이미지 생성 (권장 600x600)</li>
+                        <li>BuildingData의 <strong>Style</strong>과 <strong>Category</strong>가 올바르게 입력되었는지 확인 (업로드 도구가 자동으로 읽기)</li>
+                    </ul>
+                    
+                    <p><strong>업로드 전 체크리스트</strong>:</p>
+                    <ul class="checklist">
+                        <li>모델 삼각형 수가 제한 내</li>
+                        <li>텍스처 해상도가 적절</li>
+                        <li><strong>Mesh Filter</strong> 컴포넌트 포함</li>
+                        <li><strong>Mesh Renderer</strong> 컴포넌트 포함 (머티리얼 할당됨)</li>
+                        <li><strong>Collider</strong> 컴포넌트 포함</li>
+                        <li>프리팹이 정상적으로 인스턴스화 가능</li>
+                        <li>건축물이 그리드에 정렬됨</li>
+                        <li>누락된 머티리얼이나 텍스처 없음</li>
+                        <li>BuildingData의 모든 필드 입력됨</li>
+                        <li>미리보기 이미지가 선명함</li>
+                        <li>게임 내 테스트 통과</li>
+                    </ul>
+                </div>
+
+                <h2>9단계: 창작마당에 업로드</h2>
+                <div class="warning-box">
+                    <strong>⚠️ 업로드는 2단계로 완료됩니다</strong>. AssetBundle 패키지화와 Steam 업로드는 에디터 상태에 대한 요구사항이 다르므로 별도로 조작해야 합니다.
+                </div>
+
+                <div class="step-card">
+                    <h4>1단계: 리소스 패키지화 (비Play 모드)</h4>
+                    <ol>
+                        <li>현재 <strong>비Play 모드</strong>인지 확인 (에디터가 실행 중이 아님)</li>
+                        <li><strong>City Builder → Workshop Upload Tool</strong> 열기</li>
+                        <li>모드 유형 선택: <strong>Building</strong></li>
+                        <li><strong>BuildingData</strong>를 드래그 (도구가 자동으로 Style과 Category를 읽고, 수동으로 변경 가능)</li>
+                        <li><strong>건축물 프리팹</strong>을 드래그</li>
+                        <li>창작마당 정보 입력 (주로 제목, 설명은 창작마당에서 편집 가능)</li>
+                        <li><strong>"1단계: 리소스를 AssetBundle으로 패키지화"</strong> 클릭</li>
+                        <li><strong>"패키지화 완료! Play 모드에 진입하여 2단계를 클릭하여 업로드하세요"</strong> 프롬프트가 표시되면 성공</li>
+                    </ol>
+                    <div class="tip-box">
+                        <strong>💡 팁:</strong> 패키지화 경로는 자동으로 저장되며, Play 모드에 진입해도 손실되지 않습니다. 정보를 다시 입력할 필요가 없습니다.
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>2단계: Steam에 업로드 (Play 모드)</h4>
+                    <ol>
+                        <li>Unity 에디터의 <strong>Play</strong> 버튼을 클릭하고 SteamManager의 초기화를 기다림</li>
+                        <li>도구 창에서 Steam이 초기화되었는지 확인 (경고 프롬프트 없음)</li>
+                        <li><strong>"2단계: Steam 창작마당에 업로드"</strong> 클릭</li>
+                        <li>업로드가 완료될 때까지 기다리고 표시된 <strong>창작마당 아이템 ID</strong>를 기록 (후속 업데이트용)</li>
+                    </ol>
+                    <div class="tip-box">
+                        <strong>💡 팁:</strong> 업로드 도구는 자동으로 <code>metadata.json</code>을 생성하고 AssetBundle 콘텐츠 디렉토리에 패키지화합니다. 여기에는 Style과 Category 정보가 포함됩니다. 플레이어가 구독한 후, 게임은 자동으로 올바른 카테고리에 표시합니다.
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>10단계: 공개 및 유지보수</h4>
+                    <ol>
+                        <li>Steam 창작마당 페이지에서 정보 완성</li>
+                        <li>더 많은 스크린샷 추가</li>
+                    </ol>
+                </div>
+
+                <h2>하늘 및 지면 머티리얼 참고사항</h2>
+                <ul>
+                    <li>하늘 및 지면 셰이더는 URP 파이프라인을 사용해야 함</li>
+                    <li>지면 셰이더는 그리드 영역의 동적 크기 조정에 대응하기 위해 프로시저럴 노멀을 사용하는 것을 권장</li>
+                </ul>
+
+                <h2>일반적인 오류 및 해결책</h2>
+
+                <h3>오류 0: 패키지화 시 "Building AssetBundles while in play mode is not allowed"</h3>
+                <p><strong>원인</strong>: Play 모드에서 패키지화 버튼을 클릭했지만, AssetBundle 패키지화는 비Play 모드에서만 실행 가능</p>
+                <p><strong>해결책</strong>:</p>
+                <ol>
+                    <li>Play 모드 종료 (중지 버튼 클릭)</li>
+                    <li>도구의 "1단계: 리소스를 AssetBundle으로 패키지화"를 다시 클릭</li>
+                    <li>패키지화 완료 후 Play 모드에 진입하여 업로드</li>
+                </ol>
+
+                <h3>오류 1: 건축물이 분홍색으로 표시됨</h3>
+                <p><strong>원인</strong>: 머티리얼 또는 셰이더 누락</p>
+                <p><strong>해결책</strong>:</p>
+                <ol>
+                    <li>모든 텍스처가 올바르게 할당되었는지 확인</li>
+                    <li>머티리얼이 AssetBundle에 포함되어 있는지 확인</li>
+                </ol>
+
+                <h3>오류 2: 건축물을 배치할 수 없음</h3>
+                <p><strong>원인</strong>: 필수 컴포넌트(Mesh Filter/Mesh Renderer/Collider) 누락 또는 그리드 크기 설정 오류</p>
+                <p><strong>해결책</strong>:</p>
+                <ol>
+                    <li>건축물 프리팹에 <strong>Mesh Filter</strong>, <strong>Mesh Renderer</strong>, <strong>Collider</strong> 컴포넌트가 포함되어 있는지 확인</li>
+                    <li>Mesh Renderer에 머티리얼이 할당되었는지 확인</li>
+                    <li>건축물 루트 오브젝트에 Box Collider 추가</li>
+                    <li>BuildingData의 Grid Size 설정 확인</li>
+                    <li>건축물 크기 확인</li>
+                </ol>
+
+                <h3>오류 3: 건축물 위치가 어긋남</h3>
+                <p><strong>원인</strong>: 프리팹 Transform 설정 오류</p>
+                <p><strong>해결책</strong>:</p>
+                <ol>
+                    <li>프리팹 Position을 (0, 0, 0)으로 설정</li>
+                    <li>건축물 바닥이 Y=0 평면에 있는지 확인</li>
+                    <li>모델의 Pivot Point 위치 확인</li>
+                </ol>
+
+                <h3>오류 4: 회전 후 건축물이 어긋남</h3>
+                <p><strong>원인</strong>: 건축물 중심점이 그리드 중심에 없음</p>
+                <p><strong>해결책</strong>:</p>
+                <ol>
+                    <li>3D 소프트웨어에서 모델 원점 조정</li>
+                    <li>또는 Unity에서 자식 오브젝트의 위치 조정</li>
+                    <li>건축물이 중심점을 중심으로 회전하는지 확인</li>
+                </ol>
+
+                <h3>오류 5: 파일이 너무 커서 업로드할 수 없음</h3>
+                <p><strong>원인</strong>: 텍스처 해상도가 너무 높거나 모델이 너무 복잡함</p>
+                <p><strong>해결책</strong>:</p>
+                <ol>
+                    <li>텍스처 해상도 낮추기 (예: 4K에서 2K로)</li>
+                    <li>모델을 최적화하여 폴리곤 수 줄이기</li>
+                    <li>텍스처 압축 (DXT5 또는 BC7 형식 사용)</li>
+                    <li>불필요한 디테일 제거</li>
+                </ol>
+
+                <h2>고급 기법</h2>
+
+                <h3>애니메이션 추가</h3>
+                <p>건축물에 애니메이션이 포함된 경우 (예: 회전하는 풍차):</p>
+                <ol>
+                    <li>애니메이션 컨트롤러를 생성하고 애니메이션을 드래그</li>
+                    <li>프리팹에 Animator 컴포넌트 추가</li>
+                    <li>애니메이션 컨트롤러를 Animator 컴포넌트에 드래그</li>
+                </ol>
+
+                <h3>LOD 시스템 사용</h3>
+                <p>대형 건축물에 디테일 제거 스크립트 추가:</p>
+                <ol>
+                    <li>BuildingDetailCulling 스크립트 추가</li>
+                    <li>모델에 다른 LOD 레벨 할당</li>
+                    <li>각 레벨의 제거 거리 설정</li>
+                </ol>
+
+                <h3>커스텀 머티리얼 효과</h3>
+                <p>Shader Graph를 사용하여 특수 효과 생성:</p>
+                <ol>
+                    <li>Shader Graph 에셋 생성</li>
+                    <li>커스텀 효과 설계 (예: 발광하는 창문)</li>
+                    <li>이 셰이더를 사용하여 머티리얼 생성</li>
+                    <li>셰이더가 타겟 플랫폼과 호환되는지 확인</li>
+                </ol>
+
+                <h2>결론</h2>
+                <p>커뮤니티에 대한 제작과 기여에 감사드립니다. 여러분의 콘텐츠를 통해 게임이 장기적인 활력을 뿜어내길 바랍니다!</p>
+                <p>여러분의 창작물이 게임에 더 다채로운 가능성을 추가하는 것을 기대합니다!</p>
+
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border-color);">
+                
+                <div class="downloads-section" style="margin-top: 40px;">
+                    <h2>📦 개발 리소스 다운로드</h2>
+                    <div class="download-grid">
+                        <div class="download-card">
+                            <h3>Unity 패키지</h3>
+                            <p>BuildingData, WorkshopUploadTool 스크립트와 Steamworks.NET 포함</p>
+                            <a href="#" class="btn-download" onclick="alert('실제 다운로드 링크로 교체하세요')">.unitypackage 다운로드</a>
+                        </div>
+                        <div class="download-card">
+                            <h3>스탠드얼론 스크립트</h3>
+                            <p>BuildingData.cs, WorkshopUploadTool.cs, BuildingDetailCulling.cs 스크립트 파일 (Steamworks.NET 없음)</p>
+                            <a href="#" class="btn-download" onclick="alert('실제 다운로드 링크로 교체하세요')">Scripts.zip 다운로드</a>
+                        </div>
+                        <div class="download-card">
+                            <h3>Steamworks.NET</h3>
+                            <p>창작마당 업로드 기능용 Steam API 통합 라이브러리</p>
+                            <a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank" class="btn-download">GitHub Releases</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 3D 시티 빌더 게임 | 버전 1.0 | Unity 2022.3 LTS 지원</p>
+        </footer>
+    </div>
+</body>
+</html>

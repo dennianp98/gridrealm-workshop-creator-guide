@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ワークショップ建物作成ガイド - 日本語</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 言語選択に戻る</a>
+        
+        <div class="guide-container">
+            <header class="guide-header">
+                <h1>🏗️ ワークショップ建物作成ガイド</h1>
+                <p class="version">バージョン: 1.0 | 最終更新: 2026 | 対応: Unity 2022.3 LTS</p>
+            </header>
+
+            <div class="guide-content">
+                <p>クリエイターの皆様、ようこそ！カスタムコンテンツの作成にご興味をお持ちいただきありがとうございます！あなたの貢献がコミュニティの繁栄に役立ちます！このガイドは、仕様に準拠したコンテンツを作成し、Steamワークショップにアップロードする方法を説明します。</p>
+
+                <h2>技術要件</h2>
+                <p>コンテンツのアップロードには、<strong>BuildingData</strong>と<strong>WorkshopUploadTool</strong>の2つのスクリプトが必要です。BuildingDataは建物データの入力に使用し、WorkshopUploadToolはアップロードに使用します。また、<strong>Steamworks.NET</strong>も必要です。Steamworks.NETを更新する必要がある場合は、GitHubページからダウンロードできます：</p>
+                <p><a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank">https://github.com/rlabrecque/Steamworks.NET/releases</a></p>
+                <p>Unityにインポートして、空のゲームオブジェクトにSteam Managerスクリプトをアタッチしてください。</p>
+
+                <div class="tip-box">
+                    <strong>💡 ヒント：</strong>アップロードに必要なスクリプトとSteamworks.NETをUnityパッケージファイルにまとめました。このパッケージファイルを使用するか、個別にダウンロードできます。
+                </div>
+
+                <h3>建物モデル仕様</h3>
+                <div class="warning-box">
+                    <strong>⚠️ 必須コンポーネントのお知らせ：</strong>建物プレハブには以下の3つのコアコンポーネントが必須です。いずれかが欠けると機能異常が発生します：
+                    <ul>
+                        <li><strong>Mesh Filter</strong>：モデルメッシュの表示</li>
+                        <li><strong>Mesh Renderer</strong>：モデルのレンダリング（マテリアルの割り当てが必要）</li>
+                        <li><strong>Collider</strong>（Box Collider）：マウスホバーハイライト、クリック検出、配置衝突判定に使用</li>
+                    </ul>
+                </div>
+
+                <h3>サポートするリソース形式</h3>
+                <ul>
+                    <li><strong>モデル</strong>: FBX</li>
+                    <li><strong>テクスチャ</strong>: PNG</li>
+                    <li><strong>マテリアル</strong>: Unity URP Lit Shader</li>
+                </ul>
+
+                <h3>ファイルサイズ制限</h3>
+                <ul>
+                    <li>単一建物AssetBundle: ≤ 50MB</li>
+                    <li>プレビュー画像: ≤ 1MB</li>
+                    <li>総ダウンロードサイズ: ≤ 100MB</li>
+                </ul>
+
+                <h2>建物デザインガイドライン</h2>
+
+                <h3>1. サイズ仕様</h3>
+                <p>建物が占有するグリッドサイズに基づいて設計します。建物の底部（基礎）サイズは最小でも縦横1メートル以上にしてください：</p>
+                <p>建物のグリッド占有率が正しく計算されるように、建物の底部サイズは<strong>奇数の正方形</strong>を使用することを推奨します。例：1×1、3×3、5×5。<strong>偶数の正方形や非正方形は推奨しません</strong>。例：1×2、2×2、2×3、4×4。</p>
+                <p><strong>高さ</strong>: 厳格な制限はありませんが、最低0.1メートル以上を推奨します</p>
+
+                <h3>2. ビジュアルスタイル</h3>
+                <p>ゲームの一貫性を保つため、以下を推奨します：</p>
+                <ul>
+                    <li>LowPolyスタイルを使用</li>
+                    <li>建物の全体的なプロポーションとスケール関係を確保（ゲームデフォルトスケール参照：キャラクターの高さ0.1メートル）</li>
+                    <li>アイソメトリックビューに適したデザインを使用</li>
+                    <li>過度に細かいディテールを避ける（遠距離では見えない）</li>
+                    <li>明確な輪郭と色のコントラストを使用</li>
+                    <li>異なる角度からのディテールに配慮</li>
+                </ul>
+
+                <h3>3. パフォーマンス最適化の推奨事項</h3>
+                <ul>
+                    <li>ポリゴン数を適切に管理</li>
+                    <li>透明マテリアル（Alpha BlendではなくAlpha Testを使用）</li>
+                </ul>
+
+                <h2>作成プロセス</h2>
+
+                <div class="step-card">
+                    <h4>ステップ1: 3Dソフトウェアでモデリング</h4>
+                    <ol>
+                        <li>Blender、Maya、3ds Maxなどを使用してモデルを作成</li>
+                        <li>モデルの原点が底部の中心にあることを確認
+                            <ul>
+                                <li>✅ 正しい: 建物の中心点がワールド原点にある</li>
+                                <li>❌ 間違い: 建物がオフセットしているか回転が整列していない</li>
+                            </ul>
+                        </li>
+                        <li>すべてのトランスフォームを適用（Scale、Rotation）</li>
+                        <li>FBX形式でエクスポート</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ2: Unityにインポート</h4>
+                    <ol>
+                        <li>FBXをUnityプロジェクトにドラッグ</li>
+                        <li>建物プレハブのTransform Positionを(0, 0, 0)に設定</li>
+                        <li>建物の底部がY=0平面にあることを確認</li>
+                        <li>建物がZ軸正の方向を向くように設定</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ3: マテリアルとテクスチャの設定</h4>
+                    <ol>
+                        <li>マテリアルを作成（URP Lit Shaderを使用）</li>
+                        <li>マテリアルパラメータを調整</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ4: 必須コンポーネントの追加</h4>
+                    <p>建物プレハブに以下の3つの<strong>必須コンポーネント</strong>が含まれていることを確認：</p>
+                    
+                    <h4>1. Mesh FilterとMesh Renderer</h4>
+                    <ol>
+                        <li>建物のルートオブジェクトを選択</li>
+                        <li><strong>Mesh Filter</strong>コンポーネントが追加されていることを確認（ない場合はAdd Component → Mesh Filterをクリック）</li>
+                        <li><strong>Mesh Renderer</strong>コンポーネントが追加されていることを確認</li>
+                        <li>Mesh Rendererでマテリアルを割り当て（StandardまたはURP Lit Shaderを使用）</li>
+                    </ol>
+                    <div class="warning-box">
+                        <strong>⚠️ 重要：</strong>Mesh Rendererがない建物は表示されず、マウスホバーハイライト効果もトリガーされません！
+                    </div>
+
+                    <h4>2. Collider</h4>
+                    <ol>
+                        <li>建物のルートオブジェクトを選択</li>
+                        <li><strong>Box Collider</strong>コンポーネントを追加（推奨）または<strong>Mesh Collider</strong></li>
+                        <li>Colliderのサイズを建物全体をカバーするように調整</li>
+                        <li>Colliderが建物の範囲を超えないように注意。超えると他の建物と衝突して配置できなくなります</li>
+                    </ol>
+                    <div class="warning-box">
+                        <strong>⚠️ 重要：</strong>Colliderはマウスホバーハイライトとクリック検出に必須です！Colliderがない建物はプレイヤーが選択したり操作したりできません。
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ5: プレハブの作成</h4>
+                    <ol>
+                        <li>建物をProjectウィンドウにドラッグしてPrefabを作成</li>
+                        <li>命名規則: <code>{BuildingName}_Prefab</code></li>
+                        <li>プレハブが正常にインスタンス化できることをテスト</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ6: BuildingDataの作成</h4>
+                    <ol>
+                        <li>右クリック → <strong>Create → City Builder → Building Data</strong></li>
+                        <li>以下のフィールドを入力：</li>
+                    </ol>
+                    
+                    <table>
+                        <tr>
+                            <th>フィールド</th>
+                            <th>説明</th>
+                            <th>例</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Building Name</strong></td>
+                            <td>建物の表示名、名前または番号を使用可能</td>
+                            <td>Ferriswheel、SSmbl2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Building ID</strong></td>
+                            <td>一意の識別子、スタイル名+番号の使用を推奨、または純粋な番号</td>
+                            <td>SunsetCity_01、SSmbl2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Style</strong> ⭐</td>
+                            <td><strong>ゲームの建物メニューでどのスタイルタブに表示されるかを決定</strong>、開発者名、パッケージ名、またはテーマ名の使用を推奨。同じシリーズの建物は同じ値を設定</td>
+                            <td>Lyon'sPack、SunsetCity</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Category</strong> ⭐</td>
+                            <td><strong>そのスタイルの下でどのカテゴリ列に表示されるかを決定</strong>、互換性のために既存のゲームカテゴリを使用可能、または建物の分類に応じて入力</td>
+                            <td>Large、Residential</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Grid Size</strong></td>
+                            <td>建物のグリッド占有サイズ</td>
+                            <td>3x3</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Building Prefab</strong></td>
+                            <td>建物プレハブをドラッグ</td>
+                            <td>—</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>ゲーム内蔵カテゴリ参考</strong>：</p>
+                    <table>
+                        <tr>
+                            <th>カテゴリ値</th>
+                            <th>説明</th>
+                        </tr>
+                        <tr><td><code>Large</code></td><td>大型</td></tr>
+                        <tr><td><code>Medium</code></td><td>中型</td></tr>
+                        <tr><td><code>Small</code></td><td>小型</td></tr>
+                    </table>
+
+                    <div class="warning-box">
+                        <strong>⚠️ StyleとCategoryフィールドは非常に重要：</strong>これらは<code>metadata.json</code>にパッケージ化されます（アップロードツールが自動的に書き込み）。ゲームがModを読み込むとき、これら2つのフィールドに基づいて建物のメニュー内の位置を決定します。必ず入力してください。そうしないと、建物が正しいカテゴリに表示されない可能性があります。
+                    </div>
+
+                    <ol start="3">
+                        <li>建物アイコンを作成（推奨128×128 PNG）し、<strong>Icon</strong>フィールドにドラッグ</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ7: 建物のテスト</h4>
+                    <ol>
+                        <li>ゲーム内で建物をテスト：
+                            <ul>
+                                <li>正しく配置できるか</li>
+                                <li>回転は正常か</li>
+                                <li>衝突判定は正しいか</li>
+                                <li>視覚効果は満足できるか</li>
+                            </ul>
+                        </li>
+                        <li>満足するまで調整</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ8: アップロード準備</h4>
+                    <ul>
+                        <li>プレビュー画像を作成（推奨600x600）</li>
+                        <li>BuildingDataの<strong>Style</strong>と<strong>Category</strong>が正しく入力されていることを確認（アップロードツールが自動的に読み取り）</li>
+                    </ul>
+                    
+                    <p><strong>アップロード前チェックリスト</strong>：</p>
+                    <ul class="checklist">
+                        <li>モデルの三角形数が制限内</li>
+                        <li>テクスチャ解像度が適切</li>
+                        <li><strong>Mesh Filter</strong>コンポーネントを含む</li>
+                        <li><strong>Mesh Renderer</strong>コンポーネントを含む（マテリアル割り当て済み）</li>
+                        <li><strong>Collider</strong>コンポーネントを含む</li>
+                        <li>プレハブが正常にインスタンス化できる</li>
+                        <li>建物がグリッドに整列している</li>
+                        <li>欠落したマテリアルやテクスチャがない</li>
+                        <li>BuildingDataのすべてのフィールドが入力済み</li>
+                        <li>プレビュー画像が鮮明</li>
+                        <li>ゲーム内テストに合格</li>
+                    </ul>
+                </div>
+
+                <h2>ステップ9: ワークショップへのアップロード</h2>
+                <div class="warning-box">
+                    <strong>⚠️ アップロードは2ステップで完了します</strong>。AssetBundleのパッケージ化とSteamアップロードはエディタの状態に対する要件が異なるため、別々に操作する必要があります。
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ1: リソースのパッケージ化（非Playモード）</h4>
+                    <ol>
+                        <li>現在<strong>非Playモード</strong>であることを確認（エディタが実行中でない）</li>
+                        <li><strong>City Builder → Workshop Upload Tool</strong>を開く</li>
+                        <li>Modタイプを選択：<strong>Building</strong></li>
+                        <li><strong>BuildingData</strong>をドラッグ（ツールが自動的にStyleとCategoryを読み取り、手動で変更可能）</li>
+                        <li><strong>建物プレハブ</strong>をドラッグ</li>
+                        <li>ワークショップ情報を入力（主にタイトル、説明はワークショップで編集可能）</li>
+                        <li><strong>「ステップ1: リソースをAssetBundleとしてパッケージ化」</strong>をクリック</li>
+                        <li><strong>「パッケージ化完了！Playモードに入ってステップ2をクリックしてアップロードしてください」</strong>というプロンプトが表示されたら成功</li>
+                    </ol>
+                    <div class="tip-box">
+                        <strong>💡 ヒント：</strong>パッケージ化パスは自動的に保存され、Playモードに入っても失われません。情報を再入力する必要はありません。
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ2: Steamへのアップロード（Playモード）</h4>
+                    <ol>
+                        <li>Unityエディタの<strong>Play</strong>ボタンをクリックし、SteamManagerの初期化を待つ</li>
+                        <li>ツールウィンドウで、Steamが初期化されたことを確認（警告プロンプトなし）</li>
+                        <li><strong>「ステップ2: Steamワークショップにアップロード」</strong>をクリック</li>
+                        <li>アップロードが完了するのを待ち、表示された<strong>ワークショップアイテムID</strong>を記録（後続の更新用）</li>
+                    </ol>
+                    <div class="tip-box">
+                        <strong>💡 ヒント：</strong>アップロードツールは自動的に<code>metadata.json</code>を生成し、AssetBundleコンテンツディレクトリにパッケージ化します。これにはStyleとCategory情報が含まれます。プレイヤーが購読後、ゲームは自動的に正しいカテゴリに表示します。
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h4>ステップ10: 公開とメンテナンス</h4>
+                    <ol>
+                        <li>Steamワークショップページで情報を完成させる</li>
+                        <li>さらにスクリーンショットを追加</li>
+                    </ol>
+                </div>
+
+                <h2>天空と地面マテリアルの注意事項</h2>
+                <ul>
+                    <li>天空と地面のシェーダーはURPパイプラインを使用する必要がある</li>
+                    <li>地面シェーダーは、グリッド領域の動的サイズ調整に対応するためにプロシージャル法線を使用することを推奨</li>
+                </ul>
+
+                <h2>一般的なエラーと解決策</h2>
+
+                <h3>エラー0: パッケージ化時に「Building AssetBundles while in play mode is not allowed」</h3>
+                <p><strong>原因</strong>: Playモードでパッケージ化ボタンをクリックしたが、AssetBundleのパッケージ化は非Playモードでのみ実行可能</p>
+                <p><strong>解決策</strong>：</p>
+                <ol>
+                    <li>Playモードを終了（停止ボタンをクリック）</li>
+                    <li>ツールの「ステップ1: リソースをAssetBundleとしてパッケージ化」を再クリック</li>
+                    <li>パッケージ化完了後にPlayモードに入ってアップロード</li>
+                </ol>
+
+                <h3>エラー1: 建物がピンク色で表示される</h3>
+                <p><strong>原因</strong>: マテリアルまたはシェーダーが欠落</p>
+                <p><strong>解決策</strong>：</p>
+                <ol>
+                    <li>すべてのテクスチャが正しく割り当てられていることを確認</li>
+                    <li>マテリアルがAssetBundleに含まれているか確認</li>
+                </ol>
+
+                <h3>エラー2: 建物を配置できない</h3>
+                <p><strong>原因</strong>: 必須コンポーネント（Mesh Filter/Mesh Renderer/Collider）が欠落、またはグリッドサイズ設定が誤り</p>
+                <p><strong>解決策</strong>：</p>
+                <ol>
+                    <li>建物プレハブに<strong>Mesh Filter</strong>、<strong>Mesh Renderer</strong>、<strong>Collider</strong>コンポーネントが含まれていることを確認</li>
+                    <li>Mesh Rendererにマテリアルが割り当てられているか確認</li>
+                    <li>建物のルートオブジェクトにBox Colliderを追加</li>
+                    <li>BuildingDataのGrid Size設定を確認</li>
+                    <li>建物のサイズを確認</li>
+                </ol>
+
+                <h3>エラー3: 建物の位置がずれる</h3>
+                <p><strong>原因</strong>: プレハブのTransform設定が誤り</p>
+                <p><strong>解決策</strong>：</p>
+                <ol>
+                    <li>プレハブのPositionを(0, 0, 0)に設定</li>
+                    <li>建物の底部がY=0平面にあることを確認</li>
+                    <li>モデルのPivot Point位置を確認</li>
+                </ol>
+
+                <h3>エラー4: 回転後に建物がずれる</h3>
+                <p><strong>原因</strong>: 建物の中心点がグリッド中心にない</p>
+                <p><strong>解決策</strong>：</p>
+                <ol>
+                    <li>3Dソフトウェアでモデル原点を調整</li>
+                    <li>またはUnityで子オブジェクトの位置を調整</li>
+                    <li>建物が中心点を中心に回転することを確認</li>
+                </ol>
+
+                <h3>エラー5: ファイルが大きすぎてアップロードできない</h3>
+                <p><strong>原因</strong>: テクスチャ解像度が高すぎるか、モデルが複雑すぎる</p>
+                <p><strong>解決策</strong>：</p>
+                <ol>
+                    <li>テクスチャ解像度を下げる（例：4Kから2Kへ）</li>
+                    <li>モデルを最適化してポリゴン数を減らす</li>
+                    <li>テクスチャを圧縮（DXT5またはBC7形式を使用）</li>
+                    <li>不要なディテールを削除</li>
+                </ol>
+
+                <h2>高度なテクニック</h2>
+
+                <h3>アニメーションの追加</h3>
+                <p>建物にアニメーションが含まれる場合（例：回転する風車）：</p>
+                <ol>
+                    <li>アニメーションコントローラーを作成し、アニメーションをドラッグ</li>
+                    <li>プレハブにAnimatorコンポーネントを追加</li>
+                    <li>アニメーションコントローラーをAnimatorコンポーネントにドラッグ</li>
+                </ol>
+
+                <h3>LODシステムの使用</h3>
+                <p>大型建物にディテール剔除スクリプトを追加：</p>
+                <ol>
+                    <li>BuildingDetailCullingスクリプトを追加</li>
+                    <li>モデルに異なるLODレベルを割り当て</li>
+                    <li>各レベルの剔除距離を設定</li>
+                </ol>
+
+                <h3>カスタムマテリアル効果</h3>
+                <p>Shader Graphを使用して特殊効果を作成：</p>
+                <ol>
+                    <li>Shader Graphアセットを作成</li>
+                    <li>カスタム効果を設計（例：発光する窓）</li>
+                    <li>このシェーダーを使用してマテリアルを作成</li>
+                    <li>シェーダーがターゲットプラットフォームと互換性があることを確認</li>
+                </ol>
+
+                <h2>結論</h2>
+                <p>コミュニティへの作成と貢献に感謝します。あなたのコンテンツを通じて、ゲームが長期的な活力を放つことを願っています！</p>
+                <p>あなたの作成物がゲームにもっとカラフルな可能性を追加するのを楽しみにしています！</p>
+
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border-color);">
+                
+                <div class="downloads-section" style="margin-top: 40px;">
+                    <h2>📦 開発リソースダウンロード</h2>
+                    <div class="download-grid">
+                        <div class="download-card">
+                            <h3>Unityパッケージ</h3>
+                            <p>BuildingData、WorkshopUploadToolスクリプトとSteamworks.NETを含む</p>
+                            <a href="#" class="btn-download" onclick="alert('実際のダウンロードリンクに置き換えてください')">.unitypackageをダウンロード</a>
+                        </div>
+                        <div class="download-card">
+                            <h3>スタンドアロンスクリプト</h3>
+                            <p>BuildingData.cs、WorkshopUploadTool.cs、BuildingDetailCulling.csスクリプトファイル（Steamworks.NETなし）</p>
+                            <a href="#" class="btn-download" onclick="alert('実際のダウンロードリンクに置き換えてください')">Scripts.zipをダウンロード</a>
+                        </div>
+                        <div class="download-card">
+                            <h3>Steamworks.NET</h3>
+                            <p>ワークショップアップロード機能用のSteam API統合ライブラリ</p>
+                            <a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank" class="btn-download">GitHub Releases</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 3Dシティビルダーゲーム | バージョン 1.0 | Unity 2022.3 LTS対応</p>
+        </footer>
+    </div>
+</body>
+</html>
