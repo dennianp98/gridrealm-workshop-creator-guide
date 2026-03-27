@@ -20,7 +20,7 @@
                 <p>クリエイターの皆様、ようこそ！カスタムコンテンツの作成にご興味をお持ちいただきありがとうございます！あなたの貢献がコミュニティの繁栄に役立ちます！このガイドは、仕様に準拠したコンテンツを作成し、Steamワークショップにアップロードする方法を説明します。</p>
 
                 <h2>技術要件</h2>
-                <p>コンテンツのアップロードには、<strong>BuildingData</strong>と<strong>WorkshopUploadTool</strong>の2つのスクリプトが必要です。BuildingDataは建物データの入力に使用し、WorkshopUploadToolはアップロードに使用します。また、<strong>Steamworks.NET</strong>も必要です。Steamworks.NETを更新する必要がある場合は、GitHubページからダウンロードできます：</p>
+                <p>コンテンツのアップロードには、<strong>BuildingData</strong>と<strong>WorkshopUploadTool</strong>の2つのスクリプトが必要です。BuildingDataは建物データの入力に使用し、WorkshopUploadToolはアップロードに使用します。また、<strong>Steamworks.NET</strong>と<strong>steam_appid.txt</strong>ファイルも必要です。steam_appid.txtファイルはUnityプロジェクトのルートディレクトリに配置し、ゲームID:<strong>4490290</strong>を入力してください。Steamworks.NETを更新する必要がある場合は、GitHubページからダウンロードできます：</p>
                 <p><a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank">https://github.com/rlabrecque/Steamworks.NET/releases</a></p>
                 <p>Unityにインポートして、空のゲームオブジェクトにSteam Managerスクリプトをアタッチしてください。</p>
 
@@ -245,6 +245,7 @@
                         <li>建物がグリッドに整列している</li>
                         <li>欠落したマテリアルやテクスチャがない</li>
                         <li>BuildingDataのすべてのフィールドが入力済み</li>
+                        <li>プロジェクトのルートディレクトリにsteam_appid.txtファイルが作成されているか確認</li>
                         <li>プレビュー画像が鮮明</li>
                         <li>ゲーム内テストに合格</li>
                     </ul>
@@ -400,7 +401,7 @@
                         </div>
                         <div class="download-card">
                             <h3>スタンドアロンスクリプト</h3>
-                            <p>BuildingData.cs、WorkshopUploadTool.cs、BuildingDetailCulling.csスクリプトファイル（Steamworks.NETなし）</p>
+                            <p>BuildingData.cs、WorkshopUploadTool.cs、BuildingDetailCulling.csスクリプトファイルとsteam_appid.txtファイル（Steamworks.NETなし）</p>
                             <a href="https://github.com/dennianp98/gridrealm-workshop-creator-guide/blob/main/Scripts.rar" class="btn-download">Scripts.rarをダウンロード</a>
                         </div>
                         <div class="download-card">

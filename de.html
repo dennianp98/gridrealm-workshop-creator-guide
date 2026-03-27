@@ -20,7 +20,7 @@
                 <p>Willkommen, Creator! Vielen Dank für Ihr Interesse an der Erstellung von benutzerdefinierten Inhalten! Ihr Beitrag wird der Community zum Gedeihen verhelfen! Dieser Leitfaden hilft Ihnen, Inhalte zu erstellen, die den Spezifikationen entsprechen, und sie in die Steam Workshop hochzuladen.</p>
 
                 <h2>Technische Anforderungen</h2>
-                <p>Das Hochladen von Inhalten erfordert zwei Skripte: <strong>BuildingData</strong> und <strong>WorkshopUploadTool</strong>. BuildingData wird zum Ausfüllen der Gebäudedaten verwendet, und WorkshopUploadTool wird zum Hochladen verwendet. Sie benötigen auch <strong>Steamworks.NET</strong>. Wenn Sie Steamworks.NET aktualisieren müssen, können Sie es von der GitHub-Seite herunterladen:</p>
+                <p>Das Hochladen von Inhalten erfordert zwei Skripte: <strong>BuildingData</strong> und <strong>WorkshopUploadTool</strong>. BuildingData wird zum Ausfüllen der Gebäudedaten verwendet, und WorkshopUploadTool wird zum Hochladen verwendet. Sie benötigen auch <strong>Steamworks.NET</strong> und die <strong>steam_appid.txt</strong>-Datei. Die steam_appid.txt-Datei sollte im Unity-Projekt-Stammverzeichnis mit der Spiel-ID: <strong>4490290</strong> platziert werden. Wenn Sie Steamworks.NET aktualisieren müssen, können Sie es von der GitHub-Seite herunterladen:</p>
                 <p><a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank">https://github.com/rlabrecque/Steamworks.NET/releases</a></p>
                 <p>Importieren Sie es in Unity, und hängen Sie das Steam Manager-Skript an ein leeres GameObject an.</p>
 
@@ -245,6 +245,7 @@
                         <li>Gebäude ist am Gitter ausgerichtet</li>
                         <li>Keine fehlenden Materialien oder Texturen</li>
                         <li>Alle BuildingData-Felder ausgefüllt</li>
+                        <li>Prüfen, ob die Datei steam_appid.txt im Projektstammverzeichnis erstellt wurde</li>
                         <li>Vorschaubild ist klar</li>
                         <li>Spielinterner Test bestanden</li>
                     </ul>
@@ -400,7 +401,7 @@
                         </div>
                         <div class="download-card">
                             <h3>Standalone-Skripte</h3>
-                            <p>BuildingData.cs, WorkshopUploadTool.cs und BuildingDetailCulling.cs Skriptdateien (ohne Steamworks.NET)</p>
+                            <p>BuildingData.cs, WorkshopUploadTool.cs, BuildingDetailCulling.cs Skriptdateien und steam_appid.txt-Datei (ohne Steamworks.NET)</p>
                             <a href="https://github.com/dennianp98/gridrealm-workshop-creator-guide/blob/main/Scripts.rar" class="btn-download">Scripts.rar herunterladen</a>
                         </div>
                         <div class="download-card">

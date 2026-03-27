@@ -20,7 +20,7 @@
                 <p>Bem-vindo, Criador! Obrigado pelo seu interesse em criar conteúdo personalizado! Sua contribuição ajudará a comunidade a prosperar! Este guia irá ajudá-lo a criar conteúdo que atenda às especificações e carregá-lo na Oficina Steam.</p>
 
                 <h2>Requisitos Técnicos</h2>
-                <p>O carregamento de conteúdo depende de dois scripts: <strong>BuildingData</strong> e <strong>WorkshopUploadTool</strong>. BuildingData é usado para preencher os dados do edifício, e WorkshopUploadTool é usado para o carregamento. Você também precisa do <strong>Steamworks.NET</strong>. Se precisar atualizar o Steamworks.NET, pode baixá-lo da página do GitHub:</p>
+                <p>O carregamento de conteúdo depende de dois scripts: <strong>BuildingData</strong> e <strong>WorkshopUploadTool</strong>. BuildingData é usado para preencher os dados do edifício, e WorkshopUploadTool é usado para o carregamento. Você também precisa do <strong>Steamworks.NET</strong> e do arquivo <strong>steam_appid.txt</strong>. O arquivo steam_appid.txt deve ser colocado no diretório raiz do projeto Unity com o ID do jogo: <strong>4490290</strong>. Se precisar atualizar o Steamworks.NET, pode baixá-lo da página do GitHub:</p>
                 <p><a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank">https://github.com/rlabrecque/Steamworks.NET/releases</a></p>
                 <p>Importe-o para o Unity e anexe o script Steam Manager a um GameObject vazio.</p>
 
@@ -245,6 +245,7 @@
                         <li>O edifício está alinhado à grade</li>
                         <li>Não há materiais ou texturas faltantes</li>
                         <li>Todos os campos do BuildingData estão preenchidos</li>
+                        <li>Verificar se o arquivo steam_appid.txt foi criado no diretório raiz do projeto</li>
                         <li>A imagem de visualização está clara</li>
                         <li>Teste no jogo aprovado</li>
                     </ul>
@@ -400,7 +401,7 @@
                         </div>
                         <div class="download-card">
                             <h3>Scripts Autônomos</h3>
-                            <p>Arquivos de script BuildingData.cs, WorkshopUploadTool.cs e BuildingDetailCulling.cs (sem Steamworks.NET)</p>
+                            <p>Arquivos de script BuildingData.cs, WorkshopUploadTool.cs, BuildingDetailCulling.cs e arquivo steam_appid.txt (sem Steamworks.NET)</p>
                             <a href="https://github.com/dennianp98/gridrealm-workshop-creator-guide/blob/main/Scripts.rar" class="btn-download">Baixar Scripts.rar</a>
                         </div>
                         <div class="download-card">

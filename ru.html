@@ -20,7 +20,7 @@
                 <p>Добро пожаловать, Создатель! Спасибо за интерес к созданию пользовательского контента! Ваш вклад поможет процветанию сообщества! Это руководство поможет вам создать контент, соответствующий спецификациям, и загрузить его в Мастерскую Steam.</p>
 
                 <h2>Технические требования</h2>
-                <p>Загрузка контента зависит от двух скриптов: <strong>BuildingData</strong> и <strong>WorkshopUploadTool</strong>. BuildingData используется для заполнения данных здания, а WorkshopUploadTool — для загрузки. Вам также понадобится <strong>Steamworks.NET</strong>. Если вам нужно обновить Steamworks.NET, вы можете скачать его со страницы GitHub:</p>
+                <p>Загрузка контента зависит от двух скриптов: <strong>BuildingData</strong> и <strong>WorkshopUploadTool</strong>. BuildingData используется для заполнения данных здания, а WorkshopUploadTool — для загрузки. Вам также понадобятся <strong>Steamworks.NET</strong> и файл <strong>steam_appid.txt</strong>. Файл steam_appid.txt должен быть помещен в корневой каталог проекта Unity с ID игры: <strong>4490290</strong>. Если вам нужно обновить Steamworks.NET, вы можете скачать его со страницы GitHub:</p>
                 <p><a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank">https://github.com/rlabrecque/Steamworks.NET/releases</a></p>
                 <p>Импортируйте его в Unity и прикрепите скрипт Steam Manager к пустому GameObject.</p>
 
@@ -245,6 +245,7 @@
                         <li>Здание выровнено по сетке</li>
                         <li>Нет отсутствующих материалов или текстур</li>
                         <li>Все поля BuildingData заполнены</li>
+                        <li>Проверить, создан ли файл steam_appid.txt в корневом каталоге проекта</li>
                         <li>Изображение предпросмотра чёткое</li>
                         <li>Тест в игре пройден</li>
                     </ul>
@@ -400,7 +401,7 @@
                         </div>
                         <div class="download-card">
                             <h3>Автономные скрипты</h3>
-                            <p>Файлы скриптов BuildingData.cs, WorkshopUploadTool.cs и BuildingDetailCulling.cs (без Steamworks.NET)</p>
+                            <p>Файлы скриптов BuildingData.cs, WorkshopUploadTool.cs, BuildingDetailCulling.cs и файл steam_appid.txt (без Steamworks.NET)</p>
                             <a href="https://github.com/dennianp98/gridrealm-workshop-creator-guide/blob/main/Scripts.rar" class="btn-download">Скачать Scripts.rar</a>
                         </div>
                         <div class="download-card">

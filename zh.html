@@ -20,7 +20,7 @@
                 <p>欢迎你创作者！感谢你对创建自定义内容的兴趣！你的助理将为社区的繁荣贡献力量！本指南将帮助你创建符合规范的内容并上传到Steam创意工坊。</p>
 
                 <h2>技术要求</h2>
-                <p>上传内容依赖 <strong>BuildingData</strong>、<strong>WorkshopUploadTool</strong> 两个脚本，BuildingData用于填写建筑数据，WorkshopUploadTool用于上传。还需要拥有 <strong>Steamworks.NET</strong>，如果需要更新Steamworks.NET可在Github页面下载：</p>
+                <p>上传内容依赖 <strong>BuildingData</strong>、<strong>WorkshopUploadTool</strong> 两个脚本，BuildingData用于填写建筑数据，WorkshopUploadTool用于上传。还需要拥有 <strong>Steamworks.NET</strong> 与 <strong>steam_appid.txt</strong> 文件，steam_appid.txt文件需放在Unity项目根目录并填入游戏ID：<strong>4490290</strong>，如果需要更新Steamworks.NET可在Github页面下载：</p>
                 <p><a href="https://github.com/rlabrecque/Steamworks.NET/releases" target="_blank">https://github.com/rlabrecque/Steamworks.NET/releases</a></p>
                 <p>将其导入Unity，在空对象上挂载Steam Manager脚本。</p>
 
@@ -245,6 +245,7 @@
                         <li>建筑对齐到网格</li>
                         <li>没有缺失的材质或纹理</li>
                         <li>BuildingData所有字段已填写</li>
+                        <li>检查是否已在项目根目录创建steam_appid.txt文件</li>
                         <li>预览图清晰</li>
                         <li>在游戏中测试通过</li>
                     </ul>
@@ -400,7 +401,7 @@
                         </div>
                         <div class="download-card">
                             <h3>独立脚本</h3>
-                            <p>BuildingData.cs、WorkshopUploadTool.cs 和 BuildingDetailCulling.cs 脚本文件（不含Steamworks.NET）</p>
+                            <p>BuildingData.cs、WorkshopUploadTool.cs、BuildingDetailCulling.cs 脚本文件和steam_appid.txt文件（不含Steamworks.NET）</p>
                             <a href="https://github.com/dennianp98/gridrealm-workshop-creator-guide/blob/main/Scripts.rar" class="btn-download">下载 Scripts.rar</a>
                         </div>
                         <div class="download-card">
